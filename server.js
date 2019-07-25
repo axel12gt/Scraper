@@ -1,17 +1,11 @@
-var express = require("express")
-var mongoose = require("mongoose")
-var exphbs = require("express-handlebars")
+const express = require("express")
+const mongoose = require("mongoose")
+const exphbs = require("express-handlebars")
 
-// scrape tools
-var axios = require("axios")
-var cheerio = require("cheerio")
-
-// all models
-var db = require("./models")
 // ports
-var PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 8080
 // express intialization
-var app = express()
+const app = express()
 
 // request body to json parser
 app.use(express.urlencoded({ extended: true}))
@@ -36,4 +30,3 @@ app.listen(PORT, function(){
     console.log("Check http://localhost:"+ PORT)
 })
 
-//TODO: FIGURE OUT HOW TO CONNECT MODELS
