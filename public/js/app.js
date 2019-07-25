@@ -1,19 +1,22 @@
 // document ready
 $(() => {
+    console.log("ready")
     // Grab the articles as a json
-    $.getJSON("/articles", data => {
+    $.getJSON("/article", data => {
+        console.log("yes")
         // For each one
         for (let i = 0; i < data.length; i++) {
             // Display the apropos information on the page
-            $("#articles").append("<p data-id='" + data[i]._id + "'>" +  "<a href=\"" + data[i].link + "\">" + data[i].title + "</a>" + "<br />" + data[i].author +"</p>")
+            $("#articles").append("<p class='article' data-id='" + data[i]._id + "'>" +  "<a href=\"" + data[i].link + "\">" + data[i].title + "</a>" + "<br />" + data[i].author +"</p>")
         }
     })
 
-    $(document).on("click", "p", () => {
+    $(document).on("click", ".article", function() {
         // Empty notes from the note section
         $("#notes").empty()
         //save the id from the p tag
-        let thisId = $(this).attr("data-id")
+        let thisId = $(this).data("id")
+        console.log(thisId)
 
         // makes an ajax call for the article
         $.ajax({

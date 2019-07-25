@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: true}))
 app.use(express.json())
 // sets public as a static folder
 app.use(express.static("public"))
+// app.use(express.static("public/js"))
 
 // sets handlebars
 app.engine("handlebars", exphbs({defaultLayout: "main"}) )
@@ -22,7 +23,9 @@ require("./routes/html-routes.js")(app)
 require("./routes/api-routes.js")(app)
 
 // conncects to the mongo db
-mongoose.connect("mongodb://localhost:27107/scraper", { useNewUrlParser: true})
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper";
+
+mongoose.connect(MONGODB_URI);
 
 // Start the server
 app.listen(PORT, function(){

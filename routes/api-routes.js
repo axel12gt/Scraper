@@ -12,14 +12,17 @@ module.exports = app => {
             const $ = cheerio.load(response.data)
 
             // grab stuff
-            $(".c-entry-box--compact__title").each((i, element) => {
+            $("div.c-entry-box--compact").each((i, element) => {
                 // save to an empty result object
                 const result = {}
 
                 // title and href for each link
-                result.title = $(this).children("a").text()
-                result.link = $(this).children("a").attr("href")
-                result.author = $(this).
+                result.title = $(element).find("h2").find("a").text()
+                result.link = $(element).find("h2").find("a").attr("href")
+                result.author = 
+                // result.link = $(this).children("a").attr("href")
+                // result.author = $(this).parent("span").find("a").text()
+                // console.log(result)
                 // Create a new Article using the `result` object
                 db.Article.create(result).then(dbArticle => {
                     // View the added result in the console
@@ -32,11 +35,13 @@ module.exports = app => {
     })
 
     // Route for getting all Articles from the db
-    app.get("/articles", (req,res) => {
+    app.get("/article", (req,res) => {
         // Grab every document in the Articles collection
         db.Article.find({})
         // If Articles are found send them to the client
-        .then(dbArticle => res.json(dbArticle))
+        .then(dbArticle => {
+            console.log(dbArticle)
+            res.json(dbArticle)})
         // If error happens send it back to the client
         .catch(err => res.json(err))
     })
