@@ -1,6 +1,7 @@
 // scrape tools
 const axios = require("axios")
 const cheerio = require("cheerio")
+const mongoose = require("mongoose")
 
 module.exports = app => {
     const db = require("../models")
@@ -11,6 +12,10 @@ module.exports = app => {
             // load into cherio and save with$
             const $ = cheerio.load(response.data)
 
+            mongoose.connection.collections['articles'].drop( function(err) {
+                console.log('collection dropped');
+            });
+
             // grab stuff
             $("div.c-entry-box--compact").each((i, element) => {
                 // save to an empty result object
@@ -19,7 +24,8 @@ module.exports = app => {
                 // title and href for each link
                 result.title = $(element).find("h2").find("a").text()
                 result.link = $(element).find("h2").find("a").attr("href")
-                result.author = 
+                result.author = $(element).find("span").find("a").text().split(" ")[1]
+                
                 // result.link = $(this).children("a").attr("href")
                 // result.author = $(this).parent("span").find("a").text()
                 // console.log(result)
@@ -27,6 +33,8 @@ module.exports = app => {
                 db.Article.create(result).then(dbArticle => {
                     // View the added result in the console
                     console.log(dbArticle)
+                    
+                    
                 }).catch(err => console.log(err))
             })
         })
