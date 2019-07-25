@@ -46,7 +46,7 @@ $(() => {
     })
 
     // When the save button is clicked
-    $(document).on("click", "#save", () => {
+    $(document).on("click", "#save", function() {
         // Grab the id associated with the article from the submit button
         let thisId = $(this).attr("data-id")
 
